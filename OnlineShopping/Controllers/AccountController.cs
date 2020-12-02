@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;                       //Controllers
-using OnlineShopping.ViewModels;
-using OnlineShopping.ServiceLayer;
-using OnlineShopping.DomainModel;
+﻿using System.Web.Mvc;                       //Usage of Controllers
+using OnlineShopping.ViewModels;            //Usage of ViewModels
+using OnlineShopping.ServiceLayer;          //Usage of ServiceLayer
+using OnlineShopping.DomainModel;           //Usage of Database Model
 
 namespace OnlineShopping.Controllers
 {
