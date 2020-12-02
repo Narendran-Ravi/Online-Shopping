@@ -1,0 +1,42 @@
+﻿@if (Session["UserEmail"] == null && Session["AdminEmail"] == null)
+{
+    <ul class="nav navbar-nav navbar-right">
+       
+        <li>
+            @Html.ActionLink("Login", "UserLogin", "Account", null, null)
+        </li>
+        <li>
+            @Html.ActionLink("AdminLogin", "AdminLogin", "Account", null, null)
+        </li>
+    </ul>
+}
+else if (Session["UserEmail"] != null && Session["AdminEmail"] == null)
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Hi  " + Session["UserEmail"], "Index", "Home", null, null)
+        </li>
+        <li>
+            @Html.ActionLink("Update Profile", "UpdateProfile", "User", null, null)
+        </li>
+        <li>
+            @Html.ActionLink("Logout", "Logout", "Account", null, null)
+        </li>
+    </ul>
+}
+
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Hi  " + Session["AdminEmail"], "Home", "Admin", null, null)
+        </li>
+        <li>
+            @Html.ActionLink("Update Profile","UpdateProfile","Admin",null,null)
+        </li>
+        <li>
+            @Html.ActionLink("Logout", "Logout", "Account", null, null)
+        </li>
+    </ul>
+
+}
