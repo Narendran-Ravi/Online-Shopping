@@ -24,7 +24,12 @@ namespace OnlineShopping.Controllers
 
         public ActionResult AddProducts()
         {
-            return View();
+            if (Session["AdminEmail"] != null)
+            {
+                return View();
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
         }
 
         [HttpPost]
@@ -43,14 +48,24 @@ namespace OnlineShopping.Controllers
 
         public ActionResult ViewProducts()
         {
-            IEnumerable<Producttable> product = productService.ViewProducts();
-            return View(product);
+            if (Session["AdminEmail"] != null)
+            {
+                IEnumerable<Producttable> product = productService.ViewProducts();
+                return View(product);
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
         }
 
         public ActionResult Update(int id)
         {
-            ProductViewModel product = productService.GetId(id);
-            return View(product);
+            if (Session["AdminEmail"] != null)
+            {
+                ProductViewModel product = productService.GetId(id);
+                return View(product);
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
         }
 
         [HttpPost]
@@ -66,39 +81,74 @@ namespace OnlineShopping.Controllers
         }
         public ActionResult DeleteProduct(int id)
         {
-            productService.DeleteProduct(id);
-            return RedirectToAction("ViewProducts");
+            if (Session["AdminEmail"] != null)
+            {
+                productService.DeleteProduct(id);
+                return RedirectToAction("ViewProducts");
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
         }
 
         public ActionResult CustomerOrders()
         {
-            IEnumerable<BuyRequest> buyRequest = productService.CustomerOrders();
-            return View(buyRequest);
+            if (Session["AdminEmail"] != null)
+            {
+                IEnumerable<BuyRequest> buyRequest = productService.CustomerOrders();
+                return View(buyRequest);
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
         }
 
         public ActionResult CustomerDetails(string email)
         {
-            Register register = productService.CustomerDetails(email);
-            return View(register);
-
+            if (Session["AdminEmail"] != null)
+            {
+                Register register = productService.CustomerDetails(email);
+                return View(register);
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
         }
 
         public ActionResult ProductSpecification(int id) //Displays the full specification details of a single product
         {
-            Producttable producttable = productService.ProductSpecification(id);
-            return View(producttable);
+            if (Session["UserEmail"] != null)
+            {
+                Producttable producttable = productService.ProductSpecification(id);
+                return View(producttable);
+            }
+            else
+                return RedirectToAction("UserLogin", "Account");
+        }
+
+        public ActionResult DeleteOrder(int id)
+        {
+            if (Session["UserEmail"] != null)
+            {
+                productService.CompletedOrder(id);
+                return RedirectToAction("YourOrders", "User");
+            }
+            else
+                return RedirectToAction("UserLogin", "Account");
         }
         public ActionResult CompletedOrder(int id)
         {
-            CompletedOrders completedOrders = new CompletedOrders();
-            BuyRequest buyRequest = onlineShoppingDbcontext.BuyRequests.Where(x => x.RequestId == id).FirstOrDefault();
-            completedOrders.RequestId = buyRequest.RequestId;
-            completedOrders.ProductId = buyRequest.ProductId;
-            completedOrders.Email = buyRequest.Email;
-            onlineShoppingDbcontext.CompletedOrders.Add(completedOrders);
-            onlineShoppingDbcontext.SaveChanges();
-            productService.CompletedOrder(id);
-            return RedirectToAction("CustomerOrders");
+            if (Session["AdminEmail"] != null)
+            {
+                CompletedOrders completedOrders = new CompletedOrders();
+                BuyRequest buyRequest = onlineShoppingDbcontext.BuyRequests.Where(x => x.RequestId == id).FirstOrDefault();
+                completedOrders.RequestId = buyRequest.RequestId;
+                completedOrders.ProductId = buyRequest.ProductId;
+                completedOrders.Email = buyRequest.Email;
+                onlineShoppingDbcontext.CompletedOrders.Add(completedOrders);
+                onlineShoppingDbcontext.SaveChanges();
+                productService.CompletedOrder(id);
+                return RedirectToAction("CustomerOrders");
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
           }
 
         

@@ -29,6 +29,7 @@
             <td>@item.producttable.Price</td>
             <td>
                 <a href="@Url.Action("ProductSpecification","Product",new { id =item.ProductId})" class="btn btn-info">View Product Details</a>
+                <a href="@Url.Action("DeleteOrder","Product",new { id = item.RequestId })" class="btn btn-danger" >Delete Order</a>
             </td>
 
 

@@ -30,9 +30,14 @@ namespace OnlineShopping.Controllers
         //Get method for Admin Update Profile
         public ActionResult UpdateProfile()
         {
-            var res = Convert.ToString(Session["AdminEmail"]);
-            Admin admin = adminService.GetEmail(res);
-            return View(admin);
+            if (Session["AdminEmail"] != null)
+            {
+                var res = Convert.ToString(Session["AdminEmail"]);
+                Admin admin = adminService.GetEmail(res);
+                return View(admin);
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
         }
 
         //Post method for Admin Update Profile
@@ -52,8 +57,13 @@ namespace OnlineShopping.Controllers
 
         public ActionResult CompletedOrders()
         {
-            IEnumerable<CompletedOrders> completedOrders = adminService.CompletedOrders();
-            return View(completedOrders);
+            if (Session["AdminEmail"] != null)
+            {
+                IEnumerable<CompletedOrders> completedOrders = adminService.CompletedOrders();
+                return View(completedOrders);
+            }
+            else
+                return RedirectToAction("AdminLogin", "Account");
         }
     }
 }

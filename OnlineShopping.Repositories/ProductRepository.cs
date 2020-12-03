@@ -84,6 +84,8 @@ namespace OnlineShopping.Repositories
             return onlineShoppingDbcontext.Producttables.Where(x => x.ProductID == id).SingleOrDefault();
         }
 
+       
+
         public void CompletedOrder(int id)
         {
             var res = onlineShoppingDbcontext.BuyRequests.Find(id);

@@ -44,9 +44,14 @@ namespace OnlineShopping.Controllers
 
         public ActionResult UpdateProfile()
         {
-            var email = Convert.ToString(Session["UserEmail"]);
-            RegisterViewModel registerViewModel = userService.GetEmail(email);
-            return View(registerViewModel);
+            if (Session["UserEmail"] != null)
+            {
+                var email = Convert.ToString(Session["UserEmail"]);
+                RegisterViewModel registerViewModel = userService.GetEmail(email);
+                return View(registerViewModel);
+            }
+            else
+                return RedirectToAction("UserLogin", "Account");
         }
 
         [HttpPost]
@@ -66,16 +71,26 @@ namespace OnlineShopping.Controllers
 
         public ActionResult YourOrders()
         {
-            string email = Convert.ToString(Session["UserEmail"]);
-            IEnumerable<BuyRequest> yourorders = onlineShoppingDbcontext.BuyRequests.Where(x=>x.Email == email).ToList();
-            return View(yourorders);
+            if (Session["UserEmail"] != null)
+            {
+                string email = Convert.ToString(Session["UserEmail"]);
+                IEnumerable<BuyRequest> yourorders = onlineShoppingDbcontext.BuyRequests.Where(x => x.Email == email).ToList();
+                return View(yourorders);
+            }
+            else
+                return RedirectToAction("UserLogin", "Account");
         }
 
         public ActionResult AlreadyBought()
         {
-            string email = Convert.ToString(Session["UserEmail"]);
-            IEnumerable<CompletedOrders> completedOrders = onlineShoppingDbcontext.CompletedOrders.Where(x => x.Email == email).ToList();
-            return View(completedOrders);
+            if (Session["UserEmail"] != null)
+            {
+                string email = Convert.ToString(Session["UserEmail"]);
+                IEnumerable<CompletedOrders> completedOrders = onlineShoppingDbcontext.CompletedOrders.Where(x => x.Email == email).ToList();
+                return View(completedOrders);
+            }
+            else
+                return RedirectToAction("UserLogin", "Account");
         }
     }
 }

@@ -96,6 +96,8 @@ namespace OnlineShopping.ServiceLayer
         {
             return productRepository.ProductSpecification(id);
         }
+
+        
         public void CompletedOrder(int id)    //passes the id to the Product Repository
         {
             productRepository.CompletedOrder(id);
