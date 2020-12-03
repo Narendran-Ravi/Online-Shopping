@@ -1,0 +1,38 @@
+﻿@model IEnumerable<OnlineShopping.DomainModel.BuyRequest>
+@{
+    ViewBag.Title = "Your Orders";
+    
+}
+
+
+<table class="table table-hover">
+    <tr>
+        <th>Request Id</th>
+
+        <th>Product Id</th>
+
+        <th>Product Name</th>
+        <th>Price</th>
+
+        <th></th>
+
+
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.RequestId</td>
+
+            <td>@item.ProductId</td>
+            <td>@item.producttable.ProductName</td>
+            <td>@item.producttable.Price</td>
+            <td>
+                <a href="@Url.Action("ProductSpecification","Product",new { id =item.ProductId})" class="btn btn-info">View Product Details</a>
+            </td>
+
+
+          
+        </tr>
+    }
+</table>

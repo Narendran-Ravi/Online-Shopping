@@ -3,12 +3,14 @@ using OnlineShopping.ServiceLayer;                //Usage of Service Layer
 using OnlineShopping.ViewModels;                  //Usage of ViewModels
 using System;                                    //Usage of Convert.ToFunction
 using System.Collections.Generic;                //Uasge of IEnumerable
+using System.Linq;
 using System.Web.Mvc;                            //Controller,ActionResult,TempData,RedirectToAction
 
 namespace OnlineShopping.Controllers
 {
     public class UserController : Controller
     {
+        OnlineShoppingDbcontext onlineShoppingDbcontext = new OnlineShoppingDbcontext();
         IProductService productService;
         IUserService userService;
         public UserController()
@@ -60,6 +62,20 @@ namespace OnlineShopping.Controllers
             else
             return View(registerViewModel);
            
+        }
+
+        public ActionResult YourOrders()
+        {
+            string email = Convert.ToString(Session["UserEmail"]);
+            IEnumerable<BuyRequest> yourorders = onlineShoppingDbcontext.BuyRequests.Where(x=>x.Email == email).ToList();
+            return View(yourorders);
+        }
+
+        public ActionResult AlreadyBought()
+        {
+            string email = Convert.ToString(Session["UserEmail"]);
+            IEnumerable<CompletedOrders> completedOrders = onlineShoppingDbcontext.CompletedOrders.Where(x => x.Email == email).ToList();
+            return View(completedOrders);
         }
     }
 }

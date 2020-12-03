@@ -21,6 +21,7 @@ namespace OnlineShopping.ServiceLayer
         void Buy(BuyRequest buyRequest);
         IEnumerable<BuyRequest> CustomerOrders();
         Register CustomerDetails(string email);
+        Producttable ProductSpecification(int id);
         void CompletedOrder(int id);
 
 
@@ -91,6 +92,10 @@ namespace OnlineShopping.ServiceLayer
             return register;
         }
 
+        public Producttable ProductSpecification(int id)  //passes the product id to the product Repository
+        {
+            return productRepository.ProductSpecification(id);
+        }
         public void CompletedOrder(int id)    //passes the id to the Product Repository
         {
             productRepository.CompletedOrder(id);

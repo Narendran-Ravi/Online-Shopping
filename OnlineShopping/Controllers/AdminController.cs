@@ -1,6 +1,7 @@
 ﻿using OnlineShopping.DomainModel;
 using OnlineShopping.ServiceLayer;
 using System;                           //Usage of Convert.ToFunction
+using System.Collections.Generic;
 using System.Web.Mvc;                   //Controllers
 
 namespace OnlineShopping.Controllers
@@ -47,6 +48,12 @@ namespace OnlineShopping.Controllers
             else
                 return View(admin);
             
+        }
+
+        public ActionResult CompletedOrders()
+        {
+            IEnumerable<CompletedOrders> completedOrders = adminService.CompletedOrders();
+            return View(completedOrders);
         }
     }
 }

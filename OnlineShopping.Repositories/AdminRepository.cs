@@ -11,6 +11,7 @@ namespace OnlineShopping.Repositories
         IEnumerable<Admin> AdminLogin(AdminViewModel adminViewModel);
         Admin GetEmail(string email);
         void UpdateProfile(Admin admin);
+        IEnumerable<CompletedOrders> CompletedOrders();
     }
     public class AdminRepository:IAdminRepository
     {
@@ -36,6 +37,12 @@ namespace OnlineShopping.Repositories
         {
             onlineShoppingDbcontext.Entry(admin).State = EntityState.Modified;
             onlineShoppingDbcontext.SaveChanges();
+        }
+
+        public IEnumerable<CompletedOrders> CompletedOrders()
+        {
+            IEnumerable<CompletedOrders> completedOrders = onlineShoppingDbcontext.CompletedOrders.ToList();
+            return completedOrders;
         }
     }
 }

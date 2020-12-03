@@ -15,5 +15,6 @@ namespace OnlineShopping.DomainModel
         public int RequestId{ get; set; }
         public int ProductId { get; set; }
         public string Email { get; set; }
+        public virtual Producttable producttable { get; set; }
     }
 }

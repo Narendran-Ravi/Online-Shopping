@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;               //Usage of IEnumerable type
+using System.Linq;
 using System.Web.Mvc;                           //Usage of Controllers as a base class   
 using OnlineShopping.DomainModel;               //Usage of Database Model   
 using OnlineShopping.ServiceLayer;              //Usage of Service Layer    
@@ -14,6 +15,7 @@ namespace OnlineShopping.Controllers
     /// </summary>
     public class ProductController : Controller
     {
+        OnlineShoppingDbcontext onlineShoppingDbcontext = new OnlineShoppingDbcontext();
         IProductService productService;
         public ProductController()
         {
@@ -81,12 +83,25 @@ namespace OnlineShopping.Controllers
 
         }
 
+        public ActionResult ProductSpecification(int id) //Displays the full specification details of a single product
+        {
+            Producttable producttable = productService.ProductSpecification(id);
+            return View(producttable);
+        }
         public ActionResult CompletedOrder(int id)
         {
+            CompletedOrders completedOrders = new CompletedOrders();
+            BuyRequest buyRequest = onlineShoppingDbcontext.BuyRequests.Where(x => x.RequestId == id).FirstOrDefault();
+            completedOrders.RequestId = buyRequest.RequestId;
+            completedOrders.ProductId = buyRequest.ProductId;
+            completedOrders.Email = buyRequest.Email;
+            onlineShoppingDbcontext.CompletedOrders.Add(completedOrders);
+            onlineShoppingDbcontext.SaveChanges();
             productService.CompletedOrder(id);
             return RedirectToAction("CustomerOrders");
+          }
 
-        }
+        
 
       
     }

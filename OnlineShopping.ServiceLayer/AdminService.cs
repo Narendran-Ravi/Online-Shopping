@@ -3,7 +3,7 @@ using OnlineShopping.DomainModel;           //Usage of Database Model
 using OnlineShopping.ViewModels;            //Usage of ViewModels
 using OnlineShopping.Repositories;          //Usage of Repositories
 using System.Linq;                          //Usage of IEnumerable tag
-
+using System.Collections.Generic;
 
 namespace OnlineShopping.ServiceLayer
 {
@@ -18,6 +18,7 @@ namespace OnlineShopping.ServiceLayer
         AdminViewModel AdminLogin(AdminViewModel adminViewModel);
         Admin GetEmail(string email);
         void UpdateProfile(Admin admin);
+        IEnumerable<CompletedOrders> CompletedOrders();
 
     }
     public class AdminService:IAdminService
@@ -54,6 +55,11 @@ namespace OnlineShopping.ServiceLayer
         public void UpdateProfile(Admin admin)    //passes the admin data to the UpdateProfile function in the Admin Repository
         {
             adminRepository.UpdateProfile(admin);
+        }
+
+        public IEnumerable<CompletedOrders> CompletedOrders()
+        {
+            return adminRepository.CompletedOrders();
         }
     }
 }

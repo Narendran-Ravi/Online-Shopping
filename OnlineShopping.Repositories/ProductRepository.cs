@@ -17,6 +17,7 @@ namespace OnlineShopping.Repositories
         void Buy(BuyRequest buyRequest);
         IEnumerable<BuyRequest> CustomerOrders();
         Register CustomerDetails(string email);
+        Producttable ProductSpecification(int id);
         void CompletedOrder(int id);
 
     }
@@ -76,6 +77,11 @@ namespace OnlineShopping.Repositories
         {
             var data = onlineShoppingDbcontext.Registers.Where(x => x.Email == email).SingleOrDefault();
             return data;
+        }
+
+        public Producttable ProductSpecification(int id)
+        {
+            return onlineShoppingDbcontext.Producttables.Where(x => x.ProductID == id).SingleOrDefault();
         }
 
         public void CompletedOrder(int id)

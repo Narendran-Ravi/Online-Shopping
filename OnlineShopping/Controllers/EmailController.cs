@@ -20,7 +20,7 @@ namespace OnlineShopping.Controllers
             OnlineShoppingDbcontext onlineShoppingDbcontext = new OnlineShoppingDbcontext();
             string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "Text" + ".cshtml");
             var regInfo = onlineShoppingDbcontext.BuyRequests.Where(x => x.RequestId == id).FirstOrDefault();
-            body = body.ToString();
+            //body = body.ToString();
             BuildEmailTemplate("Product-Shippment Confirmation", body, regInfo.Email);
             TempData["BuyerEmail"] = "Email sent to the Buyer";
             return RedirectToAction("CustomerOrders","Product");
@@ -28,7 +28,7 @@ namespace OnlineShopping.Controllers
 
         public static void BuildEmailTemplate(string subjectText, string bodyText, string sendTo)
         {
-            string from, to, bcc, cc, subject, body;
+            string from, to, bcc, cc, subject;
             from = "ecommercesample86@gmail.com";
             to = sendTo.Trim();
             bcc = "";
@@ -36,9 +36,9 @@ namespace OnlineShopping.Controllers
             subject = subjectText;
             StringBuilder sb = new StringBuilder();
             sb.Append(bodyText);
-            body = sb.ToString();
+            //body = sb.ToString();
             MailMessage mail = new MailMessage();
-            mail.From = new MailAddress(from);
+            mail.From=new MailAddress(from);
             mail.To.Add(new MailAddress(to));
             if (!string.IsNullOrEmpty(bcc))
             {
@@ -49,7 +49,7 @@ namespace OnlineShopping.Controllers
                 mail.CC.Add(new MailAddress(cc));
             }
             mail.Subject = subject;
-            mail.Body = body;
+            mail.Body = bodyText;
             mail.IsBodyHtml = true;
             SendEmail(mail);
         }

@@ -14,6 +14,7 @@ namespace OnlineShopping.DomainModel
       
         public DbSet<Producttable> Producttables { get; set; }
         public DbSet<BuyRequest> BuyRequests { get; set; }
+        public DbSet<CompletedOrders> CompletedOrders { get; set; }
        
 
     }
