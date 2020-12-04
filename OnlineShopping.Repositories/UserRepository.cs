@@ -15,6 +15,7 @@ namespace OnlineShopping.Repositories
         IEnumerable<Register> UserLogin(UserViewModel userViewModel);
         Register GetEmail(string email);
         void UpdateProfile(Register register);
+        void RemoveCartItem(int id);
 
     }
     public class UserRepository:IUserRepository
@@ -44,6 +45,13 @@ namespace OnlineShopping.Repositories
         public void UpdateProfile(Register register)    //Updates the Register table 
         {
             onlineShoppingDbcontext.Entry(register).State =EntityState.Modified;
+            onlineShoppingDbcontext.SaveChanges();
+        }
+
+        public void RemoveCartItem(int id)
+        {
+            var res = onlineShoppingDbcontext.Carts.Find(id);
+            onlineShoppingDbcontext.Carts.Remove(res);
             onlineShoppingDbcontext.SaveChanges();
         }
     }

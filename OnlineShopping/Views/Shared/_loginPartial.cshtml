@@ -14,16 +14,20 @@ else if (Session["UserEmail"] != null && Session["AdminEmail"] == null)
 {
 <ul class="nav navbar-nav navbar-right">
     <li>
+        @Html.ActionLink("Cart", "ViewCart", "User", null, null)
+    </li>
+    <li>
         @Html.ActionLink("Your Orders", "YourOrders", "User", null, null)
     </li>
     <li>
         @Html.ActionLink("Already Bought", "AlreadyBought", "User", null, null)
     </li>
-    <li>
-        @Html.ActionLink("Hi  " + Session["UserEmail"], "ViewProducts", "User", null, null)
-    </li>
+
     <li>
         @Html.ActionLink("Update Profile", "UpdateProfile", "User", null, null)
+    </li>
+    <li>
+        @Html.ActionLink("Hi  " + Session["UserEmail"], "ViewProducts", "User", null, null)
     </li>
     <li>
         @Html.ActionLink("Logout", "Logout", "Account", null, null)

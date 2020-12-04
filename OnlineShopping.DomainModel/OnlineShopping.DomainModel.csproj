@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Admin.cs" />
     <Compile Include="BuyRequest.cs" />
+    <Compile Include="Cart.cs" />
     <Compile Include="CompletedOrders.cs" />
     <Compile Include="Migrations\202012011028076_g.cs" />
     <Compile Include="Migrations\202012011028076_g.designer.cs">
@@ -69,6 +70,10 @@
     <Compile Include="Migrations\202012030924384_Completedforeign.cs" />
     <Compile Include="Migrations\202012030924384_Completedforeign.designer.cs">
       <DependentUpon>202012030924384_Completedforeign.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012040621157_Cart.cs" />
+    <Compile Include="Migrations\202012040621157_Cart.designer.cs">
+      <DependentUpon>202012040621157_Cart.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OnlineShoppingDbcontext.cs" />
@@ -98,6 +103,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012030924384_Completedforeign.resx">
       <DependentUpon>202012030924384_Completedforeign.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012040621157_Cart.resx">
+      <DependentUpon>202012040621157_Cart.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

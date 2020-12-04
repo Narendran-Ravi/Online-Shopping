@@ -15,6 +15,7 @@ namespace OnlineShopping.ServiceLayer
         UserViewModel UserLogin(UserViewModel userViewModel);
         RegisterViewModel GetEmail(string email);
         void UpdateProfile(RegisterViewModel registerViewModel);
+        void RemoveCartItem(int id);
     }
     public class UserService:IUserService
     {
@@ -60,6 +61,11 @@ namespace OnlineShopping.ServiceLayer
             IMapper mapper = config.CreateMapper();
             Register register = mapper.Map<Register>(registerViewModel);
             userRepository.UpdateProfile(register);
+        }
+
+        public void RemoveCartItem(int id)
+        {
+            userRepository.RemoveCartItem(id);
         }
     }
 }

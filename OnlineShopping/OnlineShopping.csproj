@@ -192,6 +192,7 @@
     <Content Include="Views\Product\ProductSpecification.cshtml" />
     <Content Include="Views\Admin\CompletedOrders.cshtml" />
     <Content Include="Views\User\AlreadyBought.cshtml" />
+    <Content Include="Views\User\ViewCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

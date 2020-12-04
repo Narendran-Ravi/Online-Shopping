@@ -1,0 +1,30 @@
+﻿@model IEnumerable<OnlineShopping.DomainModel.Cart>
+
+@{ 
+    ViewBag.Title = "Cart";
+}
+
+<table class="table table-hover">
+    <tr>
+        <th>Category</th>
+        <th>Product Name</th>
+        <th>Brand</th>
+        <th>Price</th>
+        <th>Description</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+        <td>@item.producttable.Category</td>
+        <td>@item.producttable.ProductName</td>
+        <td>@item.producttable.Brand</td>
+        <td>@item.producttable.Price</td>
+        <td>@item.producttable.Description</td>
+        <td>
+            <a href="@Url.Action("Buy", new {id=item.producttable.ProductID})" class="btn btn-success">Buy</a>
+            <a href="@Url.Action("RemoveCartItem", new {id=item.CartId})" class="btn btn-danger">Remove item</a>
+        </td>
+
+    </tr>
+    }
+</table>

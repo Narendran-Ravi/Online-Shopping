@@ -7,7 +7,8 @@
     <span class="alert-success">
         @TempData["BuyRequest"]
         @TempData["UpdateProfile"]
-        <br/>
+        @TempData["CartSuccess"]
+        <br />
 
     </span>
 </div>
@@ -45,8 +46,10 @@
             <td></td>
             <td>
                 <a href="@Url.Action("Buy",new { id=item.ProductID})" class="btn btn-success">Buy</a>
-                
-               
+                <a href="@Url.Action("AddCart", new {id=item.ProductID})" class="btn btn-info">Add to Cart</a>
+
+
+
             </td>
         </tr>
     }

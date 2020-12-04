@@ -92,5 +92,46 @@ namespace OnlineShopping.Controllers
             else
                 return RedirectToAction("UserLogin", "Account");
         }
+
+        public ActionResult AddCart(int id)
+        {
+            if (Session["UserEmail"] != null)
+            {
+                Cart cart = new Cart();
+                Producttable producttable = onlineShoppingDbcontext.Producttables.Where(x => x.ProductID == id).SingleOrDefault();
+                cart.ProductID = producttable.ProductID;
+                cart.Email = Convert.ToString(Session["UserEmail"]);
+                onlineShoppingDbcontext.Carts.Add(cart);
+                onlineShoppingDbcontext.SaveChanges();
+            }
+            else
+            {
+                TempData["AddLogin"] = "Please Login before adding the items to your cart";
+                return RedirectToAction("UserLogin", "Account");
+            }
+            TempData["CartSuccess"] = "The item has been successfully added to your cart";
+            return RedirectToAction("ViewProducts", "User");
+        }
+
+        public ActionResult ViewCart()
+        {
+            if (Session["UserEmail"] != null)
+            {
+                string email = Convert.ToString(Session["UserEmail"]);
+                IEnumerable<Cart> cart = onlineShoppingDbcontext.Carts.Where(x => x.Email == email).ToList();
+                return View(cart);
+            }
+            else
+            
+                TempData["ViewCartError"] = "Please Login to view the Items in the cart";
+                return RedirectToAction("UserLogin", "Account");
+            
+        }
+
+        public ActionResult RemoveCartItem(int id)
+        {
+            userService.RemoveCartItem(id);
+            return RedirectToAction("ViewCart");
+        }
     }
 }
