@@ -22,7 +22,7 @@ namespace OnlineShopping.Controllers
             productService = new ProductService();
          }
 
-        public ActionResult AddProducts()
+        public ActionResult AddProducts() //The seller can add new items using this method
         {
             if (Session["AdminEmail"] != null)
             {
@@ -33,7 +33,7 @@ namespace OnlineShopping.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddProducts(ProductViewModel productViewModel)
+        public ActionResult AddProducts(ProductViewModel productViewModel) //Postmethod for AddProducts
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace OnlineShopping.Controllers
             return View();
         }
 
-        public ActionResult ViewProducts()
+        public ActionResult ViewProducts() //The admin can view the list of available products
         {
             if (Session["AdminEmail"] != null)
             {
@@ -57,7 +57,7 @@ namespace OnlineShopping.Controllers
                 return RedirectToAction("AdminLogin", "Account");
         }
 
-        public ActionResult Update(int id)
+        public ActionResult Update(int id) //the admin can update the details of the product
         {
             if (Session["AdminEmail"] != null)
             {
@@ -69,7 +69,7 @@ namespace OnlineShopping.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(ProductViewModel productViewModel)
+        public ActionResult Update(ProductViewModel productViewModel) //Post method for update method
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace OnlineShopping.Controllers
             }
             return View();
         }
-        public ActionResult DeleteProduct(int id)
+        public ActionResult DeleteProduct(int id) //The admin can delete the respective item
         {
             if (Session["AdminEmail"] != null)
             {
@@ -90,7 +90,7 @@ namespace OnlineShopping.Controllers
                 return RedirectToAction("AdminLogin", "Account");
         }
       
-        public ActionResult CustomerOrders()
+        public ActionResult CustomerOrders() //The admin can view the details of customer orders
         {
             if (Session["AdminEmail"] != null)
             {
@@ -101,7 +101,7 @@ namespace OnlineShopping.Controllers
                 return RedirectToAction("AdminLogin", "Account");
         }
 
-        public ActionResult CustomerDetails(string email)
+        public ActionResult CustomerDetails(string email) //To get the details of the customer to dispatch the product
         {
             if (Session["AdminEmail"] != null)
             {
@@ -123,7 +123,7 @@ namespace OnlineShopping.Controllers
                 return RedirectToAction("UserLogin", "Account");
         }
 
-        public ActionResult DeleteOrder(int id)
+        public ActionResult DeleteOrder(int id) //The user can delete his order before it is approved by the admin
         {
             if (Session["UserEmail"] != null)
             {
@@ -133,7 +133,7 @@ namespace OnlineShopping.Controllers
             else
                 return RedirectToAction("UserLogin", "Account");
         }
-        public ActionResult CompletedOrder(int id)
+        public ActionResult CompletedOrder(int id) //This method removes the customer order detail
         {
             if (Session["AdminEmail"] != null)
             {

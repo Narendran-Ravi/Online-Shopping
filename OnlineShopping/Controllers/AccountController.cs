@@ -4,7 +4,9 @@ using OnlineShopping.ServiceLayer;          //Usage of ServiceLayer
 using OnlineShopping.DomainModel;           //Usage of Database Model
 
 namespace OnlineShopping.Controllers
-{
+{/// <summary>
+/// This controller controlls the register and login module for user and admin
+/// </summary>
     public class AccountController : Controller
     {
         IRegisterService registerService;
@@ -18,13 +20,13 @@ namespace OnlineShopping.Controllers
             adminService = new AdminService();
         }
         
-        public ActionResult Register()
+        public ActionResult Register() //Get method for sign up
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Register(RegisterViewModel registerViewModel)
+        public ActionResult Register(RegisterViewModel registerViewModel) //Post method for sign up
         {
             Register register = registerService.Mapp(registerViewModel);
             registerService.AlreadyExisting(register, out bool email, out bool phoneNumber);
@@ -47,13 +49,13 @@ namespace OnlineShopping.Controllers
                 return View();
         }
 
-        public ActionResult UserLogin()
+        public ActionResult UserLogin() //Get method for userLogin
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult UserLogin(UserViewModel userViewModel)
+        public ActionResult UserLogin(UserViewModel userViewModel) //Post method for UserLogin
         {
             if (ModelState.IsValid)
             {
@@ -72,13 +74,13 @@ namespace OnlineShopping.Controllers
             return View();
         }
 
-        public ActionResult AdminLogin()
+        public ActionResult AdminLogin()  //Get method for admin Login
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult AdminLogin(AdminViewModel adminViewModel)
+        public ActionResult AdminLogin(AdminViewModel adminViewModel)   //Post method for admin Login
         {
             if (ModelState.IsValid)
             {

@@ -1,7 +1,7 @@
-﻿using OnlineShopping.DomainModel;
-using OnlineShopping.ServiceLayer;
+﻿using OnlineShopping.DomainModel;       //Usage of Database Model
+using OnlineShopping.ServiceLayer;      //Usage of Service Layer
 using System;                           //Usage of Convert.ToFunction
-using System.Collections.Generic;
+using System.Collections.Generic;        //Usage of IEnumerable
 using System.Web.Mvc;                   //Controllers
 
 namespace OnlineShopping.Controllers
@@ -28,7 +28,7 @@ namespace OnlineShopping.Controllers
         }
 
         //Get method for Admin Update Profile
-        public ActionResult UpdateProfile()
+        public ActionResult UpdateProfile() //The admin can update his profile in this method
         {
             if (Session["AdminEmail"] != null)
             {
@@ -42,7 +42,7 @@ namespace OnlineShopping.Controllers
 
         //Post method for Admin Update Profile
         [HttpPost]
-        public ActionResult UpdateProfile(Admin admin)
+        public ActionResult UpdateProfile(Admin admin) //Post method for UpdateProfile
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace OnlineShopping.Controllers
             
         }
 
-        public ActionResult CompletedOrders()
+        public ActionResult CompletedOrders() //This method displays the completed order
         {
             if (Session["AdminEmail"] != null)
             {

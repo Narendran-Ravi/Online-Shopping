@@ -8,6 +8,9 @@ using System.Web.Mvc;                            //Controller,ActionResult,TempD
 
 namespace OnlineShopping.Controllers
 {
+    /// <summary>
+    /// User Controller - This controller contains the functions that can be performed by the user  
+    /// </summary>
     public class UserController : Controller
     {
         OnlineShoppingDbcontext onlineShoppingDbcontext = new OnlineShoppingDbcontext();
@@ -18,13 +21,13 @@ namespace OnlineShopping.Controllers
             productService = new ProductService();
             userService = new UserService();
         }
-        public ActionResult ViewProducts()
+        public ActionResult ViewProducts() //This method displays the list of products available
         {
             IEnumerable <Producttable> product = productService.ViewProducts();
             return View(product);
         }
 
-        public ActionResult Buy(int id)
+        public ActionResult Buy(int id)  //Using this method we can buy directly from the shop page
         {
             if (Session["UserEmail"] != null)
             {
@@ -41,7 +44,7 @@ namespace OnlineShopping.Controllers
             return RedirectToAction("ViewProducts");
         }
 
-        public ActionResult UpdateProfile()
+        public ActionResult UpdateProfile() //Get method for Update Profile
         {
             if (Session["UserEmail"] != null)
             {
@@ -54,7 +57,7 @@ namespace OnlineShopping.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateProfile(RegisterViewModel registerViewModel)
+        public ActionResult UpdateProfile(RegisterViewModel registerViewModel) //Post method for UpdateProfile
         {
             if(ModelState.IsValid)
             {
@@ -68,7 +71,7 @@ namespace OnlineShopping.Controllers
            
         }
 
-        public ActionResult YourOrders()
+        public ActionResult YourOrders() //This method shows the list of items that need to be approved by the seller
         {
             if (Session["UserEmail"] != null)
             {
@@ -80,7 +83,7 @@ namespace OnlineShopping.Controllers
                 return RedirectToAction("UserLogin", "Account");
         }
 
-        public ActionResult AlreadyBought()
+        public ActionResult AlreadyBought() //This method displays the list of products already bought by the user
         {
             if (Session["UserEmail"] != null)
             {
@@ -92,7 +95,7 @@ namespace OnlineShopping.Controllers
                 return RedirectToAction("UserLogin", "Account");
         }
 
-        public ActionResult AddCart(int id)
+        public ActionResult AddCart(int id) //This method is used to add the items to the cart by the user
         {
             
             if (Session["UserEmail"] != null)
@@ -113,7 +116,7 @@ namespace OnlineShopping.Controllers
             return RedirectToAction("ViewProducts", "User");
         }
 
-        public ActionResult ViewCart()
+        public ActionResult ViewCart()  //This method displays the items available in a respective user cart
         {
             if (Session["UserEmail"] != null)
             {
@@ -127,7 +130,7 @@ namespace OnlineShopping.Controllers
                 return RedirectToAction("UserLogin", "Account");
             
         }
-        public ActionResult CartBuy(int id,int quantity)
+        public ActionResult CartBuy(int id,int quantity) //This method is used to buy the products from the cart
         {
             if (Session["UserEmail"] != null)
             {
@@ -147,7 +150,7 @@ namespace OnlineShopping.Controllers
             return RedirectToAction("ViewCart");
         }
 
-        public ActionResult RemoveCartItem(int id)
+        public ActionResult RemoveCartItem(int id)   //This method removes the item from the cart
         {
             userService.RemoveCartItem(id);
             return RedirectToAction("ViewCart");
