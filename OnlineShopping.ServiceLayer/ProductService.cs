@@ -18,7 +18,7 @@ namespace OnlineShopping.ServiceLayer
         ProductViewModel GetId(int id);
         void Update(ProductViewModel productViewModel);
         void DeleteProduct(int id);
-        void Buy(BuyRequest buyRequest);
+       
         IEnumerable<BuyRequest> CustomerOrders();
         Register CustomerDetails(string email);
         Producttable ProductSpecification(int id);
@@ -76,10 +76,6 @@ namespace OnlineShopping.ServiceLayer
             productRepository.DeleteProduct(id);
         }
 
-        public void Buy(BuyRequest buyRequest)  //calls the buy method in product repository
-        {
-            productRepository.Buy(buyRequest);
-        }
 
         public IEnumerable<BuyRequest> CustomerOrders()  // calls the CustomerOrders function in the product repository
         {

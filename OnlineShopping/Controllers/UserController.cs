@@ -28,10 +28,9 @@ namespace OnlineShopping.Controllers
         {
             if (Session["UserEmail"] != null)
             {
-                BuyRequest buyRequest = new BuyRequest();
-                buyRequest.ProductId = id;
-                buyRequest.Email = Convert.ToString(Session["UserEmail"]);
-                productService.Buy(buyRequest);
+                string email= Convert.ToString(Session["UserEmail"]);
+                userService.Buy(id, email);
+                
             }
             else
             {
@@ -74,7 +73,7 @@ namespace OnlineShopping.Controllers
             if (Session["UserEmail"] != null)
             {
                 string email = Convert.ToString(Session["UserEmail"]);
-                IEnumerable<BuyRequest> yourorders = onlineShoppingDbcontext.BuyRequests.Where(x => x.Email == email).ToList();
+                IEnumerable<BuyRequest> yourorders = userService.YourOrders(email);
                 return View(yourorders);
             }
             else
@@ -86,7 +85,7 @@ namespace OnlineShopping.Controllers
             if (Session["UserEmail"] != null)
             {
                 string email = Convert.ToString(Session["UserEmail"]);
-                IEnumerable<CompletedOrders> completedOrders = onlineShoppingDbcontext.CompletedOrders.Where(x => x.Email == email).ToList();
+                IEnumerable<CompletedOrders> completedOrders = userService.AlreadyBought(email);
                 return View(completedOrders);
             }
             else
@@ -95,14 +94,16 @@ namespace OnlineShopping.Controllers
 
         public ActionResult AddCart(int id)
         {
+            
             if (Session["UserEmail"] != null)
             {
-                Cart cart = new Cart();
-                Producttable producttable = onlineShoppingDbcontext.Producttables.Where(x => x.ProductID == id).SingleOrDefault();
-                cart.ProductID = producttable.ProductID;
-                cart.Email = Convert.ToString(Session["UserEmail"]);
-                onlineShoppingDbcontext.Carts.Add(cart);
-                onlineShoppingDbcontext.SaveChanges();
+                string email = Convert.ToString(Session["UserEmail"]);
+               
+                IEnumerable<Producttable> producttable = userService.FindID(id);
+                userService.AddCart(id, email);
+                //onlineShoppingDbcontext.Producttables.Where(x => x.ProductID == id).SingleOrDefault();
+               
+               
             }
             else
             {
@@ -118,7 +119,7 @@ namespace OnlineShopping.Controllers
             if (Session["UserEmail"] != null)
             {
                 string email = Convert.ToString(Session["UserEmail"]);
-                IEnumerable<Cart> cart = onlineShoppingDbcontext.Carts.Where(x => x.Email == email).ToList();
+                IEnumerable<Cart> cart = userService.ViewCart(email); 
                 return View(cart);
             }
             else

@@ -26,6 +26,8 @@
             <th>User email</th>
 
             <th></th>
+            <th></th>
+            <th></th>
             
 
 
@@ -44,9 +46,10 @@
 
 
                 <td>
-                    <a href="@Url.Action("CustomerDetails",new { email=item.Email})" class="btn btn-success">View Customer Details</a>
-                    <a href="@Url.Action("BuildEmailTemplate","Email",new {id=item.RequestId})" class=" btn btn-primary">Send Confirmation Mail</a>
-                    <a href="@Url.Action("CompletedOrder",new{ id=item.RequestId })" class="btn btn-danger">Completed Order</a>
+                    <a href="@Url.Action("CustomerDetails",new { email=item.Email})" class="btn btn-success"><span class="glyphicon glyphicon-tasks"></span> Customer Details</a>
+                    </td><td>
+                    <a href="@Url.Action("BuildEmailTemplate","Email",new {id=item.RequestId})" class=" btn btn-primary"><span class="glyphicon glyphicon-envelope"></span>  Send Confirmation Mail</a></td>
+                   <td> <a href="@Url.Action("CompletedOrder",new{ id=item.RequestId })" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Complete Order</a>
 
                 </td>
             </tr>

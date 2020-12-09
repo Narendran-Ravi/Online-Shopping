@@ -15,7 +15,13 @@ namespace OnlineShopping.Repositories
         IEnumerable<Register> UserLogin(UserViewModel userViewModel);
         Register GetEmail(string email);
         void UpdateProfile(Register register);
+        void Buy(BuyRequest buyRequest);
         void RemoveCartItem(int id);
+        IEnumerable<BuyRequest> YourOrders(string email);
+        IEnumerable<CompletedOrders> AlreadyBought(string email);
+        IEnumerable<Cart> ViewCart(string email);
+        IEnumerable<Producttable> FindID(int id);
+        void AddCart(Cart cart);
 
     }
     public class UserRepository:IUserRepository
@@ -48,11 +54,43 @@ namespace OnlineShopping.Repositories
             onlineShoppingDbcontext.SaveChanges();
         }
 
+        public void Buy(BuyRequest buyRequest)
+        {
+            onlineShoppingDbcontext.BuyRequests.Add(buyRequest);
+            onlineShoppingDbcontext.SaveChanges();
+        }
+
         public void RemoveCartItem(int id)
         {
             var res = onlineShoppingDbcontext.Carts.Find(id);
             onlineShoppingDbcontext.Carts.Remove(res);
             onlineShoppingDbcontext.SaveChanges();
         }
+        public IEnumerable<BuyRequest> YourOrders(string email)
+        {
+            return onlineShoppingDbcontext.BuyRequests.Where(x => x.Email == email).ToList();
+        }
+
+        public IEnumerable<CompletedOrders> AlreadyBought(string email)
+        {
+            return onlineShoppingDbcontext.CompletedOrders.Where(x => x.Email == email).ToList();
+        }
+
+        public IEnumerable<Cart> ViewCart(string email)
+        {
+            return onlineShoppingDbcontext.Carts.Where(x => x.Email == email).ToList();
+        }
+
+        public IEnumerable<Producttable> FindID(int id)
+        {
+            return onlineShoppingDbcontext.Producttables.Where(x => x.ProductID == id).ToList();
+        }
+
+        public void AddCart(Cart cart)
+        {
+            onlineShoppingDbcontext.Carts.Add(cart);
+            onlineShoppingDbcontext.SaveChanges();
+        }
+
     }
 }

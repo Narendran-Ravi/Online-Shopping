@@ -16,20 +16,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
+
                 </button>
                 @Html.ActionLink("Online Shopping", "About", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
+              
                 <ul class="nav navbar-nav">
+
                     <li>
-                        @Html.ActionLink("Home", "ViewProducts", "User", null, null)
+                        <a href="@Url.Action("ViewProducts", "User")">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                            Shop
+                        </a>
                     </li>
                     <li>
-                        @Html.ActionLink("Contact", "Contact", "Home", null, null)
+                        <a href="@Url.Action("Contact", "Home")">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            Contact
+                        </a>
                     </li>
-                    @*<li>
-                        @Html.ActionLink("About", "About", "Home", null, null)
-                    </li>*@
+
                 </ul>
                 @Html.Partial("_loginPartial")
             </div>
@@ -48,7 +55,6 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
-    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-        <script src="~/Scripts/bootstrap.min.js"></script>*@
+   
 </body>
 </html>

@@ -14,7 +14,7 @@ namespace OnlineShopping.Repositories
         Producttable GetId(int id);
         void Update(Producttable producttable);
         void DeleteProduct(int id);
-        void Buy(BuyRequest buyRequest);
+       
         IEnumerable<BuyRequest> CustomerOrders();
         Register CustomerDetails(string email);
         Producttable ProductSpecification(int id);
@@ -62,11 +62,7 @@ namespace OnlineShopping.Repositories
 
         }
 
-        public void Buy(BuyRequest buyRequest)
-        {
-            onlineShoppingDbcontext.BuyRequests.Add(buyRequest);
-            onlineShoppingDbcontext.SaveChanges();
-        }
+     
         public IEnumerable<BuyRequest> CustomerOrders()
         {
             IEnumerable<BuyRequest> buyRequest = onlineShoppingDbcontext.BuyRequests.ToList();
