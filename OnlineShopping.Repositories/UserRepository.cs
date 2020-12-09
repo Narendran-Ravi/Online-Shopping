@@ -22,6 +22,8 @@ namespace OnlineShopping.Repositories
         IEnumerable<Cart> ViewCart(string email);
         IEnumerable<Producttable> FindID(int id);
         void AddCart(Cart cart);
+        List<Cart> FindUser(string email);
+        void UpdateCart(Cart item);
 
     }
     public class UserRepository:IUserRepository
@@ -92,5 +94,15 @@ namespace OnlineShopping.Repositories
             onlineShoppingDbcontext.SaveChanges();
         }
 
+        public List<Cart> FindUser (string email)
+        {
+            return onlineShoppingDbcontext.Carts.Where(x => x.Email == email).ToList();
+        }
+
+        public void UpdateCart(Cart item)    
+        {
+            onlineShoppingDbcontext.Entry(item).State = EntityState.Modified;
+            onlineShoppingDbcontext.SaveChanges();
+        }
     }
 }

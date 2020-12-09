@@ -75,6 +75,10 @@
     <Compile Include="Migrations\202012040621157_Cart.designer.cs">
       <DependentUpon>202012040621157_Cart.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012090526406_quantity.cs" />
+    <Compile Include="Migrations\202012090526406_quantity.designer.cs">
+      <DependentUpon>202012090526406_quantity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OnlineShoppingDbcontext.cs" />
     <Compile Include="Producttable.cs" />
@@ -106,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012040621157_Cart.resx">
       <DependentUpon>202012040621157_Cart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012090526406_quantity.resx">
+      <DependentUpon>202012090526406_quantity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

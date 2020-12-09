@@ -10,7 +10,11 @@ namespace OnlineShopping.DomainModel
         public int CartId { get; set; }
         public int ProductID { get; set; }
         public string Email { get; set; }
+        public int quantity { get; set; }
+
         [ForeignKey("ProductID")]
         public virtual Producttable producttable { get; set; }
+
+       
     }
 }

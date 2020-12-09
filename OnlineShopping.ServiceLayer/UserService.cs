@@ -23,6 +23,7 @@ namespace OnlineShopping.ServiceLayer
         IEnumerable<Cart> ViewCart(string email);
         IEnumerable<Producttable> FindID(int id);
         void AddCart(int id, string email);
+        void CartBuy(int id, string email, int quantity);
     }
     public class UserService : IUserService
     {
@@ -75,6 +76,7 @@ namespace OnlineShopping.ServiceLayer
             BuyRequest buyRequest = new BuyRequest();
             buyRequest.ProductId = id;
             buyRequest.Email = email;
+            buyRequest.quantity = 1;
             userRepository.Buy(buyRequest);
         }
 
@@ -105,9 +107,36 @@ namespace OnlineShopping.ServiceLayer
         public void AddCart(int id,string email)
         {
             Cart cart = new Cart();
-            cart.ProductID = id;
-            cart.Email = email;
-            userRepository.AddCart(cart);
+            List<Cart> carts = userRepository.FindUser(email);
+            bool AlreadyExists = carts.Any(x => x.ProductID == id);
+            if (AlreadyExists)
+            {
+                foreach (var item in carts)
+                {
+                    if (item.ProductID == id)
+                    {
+                        item.quantity = ++item.quantity;
+                        userRepository.UpdateCart(item);
+                    }
+                }
+            }
+            else
+            {
+                cart.quantity=1;
+                cart.ProductID = id;
+                cart.Email = email;
+                userRepository.AddCart(cart);
+            }
+        }
+
+        public void CartBuy(int id,string email,int quantity)
+        {
+            BuyRequest buyRequest = new BuyRequest();
+            buyRequest.ProductId = id;
+            buyRequest.Email = email;
+            buyRequest.quantity = quantity;
+            userRepository.Buy(buyRequest);
+
         }
 
         

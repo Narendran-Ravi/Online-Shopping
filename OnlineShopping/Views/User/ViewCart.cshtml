@@ -4,11 +4,20 @@
     ViewBag.Title = "Cart";
 }
 
+<div style="text-align:center">
+    <span class="alert-success">
+        @TempData["CartBuyRequest"]
+        <br />
+
+    </span>
+</div>
+
 <table class="table table-hover">
     <tr>
         <th>Category</th>
         <th>Product Name</th>
         <th>Brand</th>
+        <th>Quantity</th>
         <th>Price</th>
         <th>Description</th>
     </tr>
@@ -18,12 +27,13 @@
     <td>@item.producttable.Category</td>
     <td>@item.producttable.ProductName</td>
     <td>@item.producttable.Brand</td>
-    @*<td>@(@item.producttable.Price*@item.producttable.Price)</td>*@
-    <td>@item.producttable.Price</td>
+    <td>@item.quantity</td>
+    @*<td>@(@item.producttable.Priceitem.producttable.Price)</td>*@
+    <td>@(@item.producttable.Price*@item.quantity)</td>
     <td>@item.producttable.Description</td>
     <td>
-        <a href="@Url.Action("Buy", new {id=item.producttable.ProductID})" class="btn btn-success"><span class="glyphicon glyphicon-tag"></span> Buy</a>
-        <a href="@Url.Action("RemoveCartItem", new {id=item.CartId})" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Remove item</a>
+        <a href="@Url.Action("CartBuy", new { id = item.producttable.ProductID , quantity=item.quantity})" class="btn btn-success"><span class="glyphicon glyphicon-tag"></span> Buy</a>
+        <a href="@Url.Action("RemoveCartItem", new { id = item.CartId })" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Remove item</a>
     </td>
 
 </tr>

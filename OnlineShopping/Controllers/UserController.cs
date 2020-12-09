@@ -101,8 +101,7 @@ namespace OnlineShopping.Controllers
                
                 IEnumerable<Producttable> producttable = userService.FindID(id);
                 userService.AddCart(id, email);
-                //onlineShoppingDbcontext.Producttables.Where(x => x.ProductID == id).SingleOrDefault();
-               
+                
                
             }
             else
@@ -127,6 +126,25 @@ namespace OnlineShopping.Controllers
                 TempData["ViewCartError"] = "Please Login to view the Items in the cart";
                 return RedirectToAction("UserLogin", "Account");
             
+        }
+        public ActionResult CartBuy(int id,int quantity)
+        {
+            if (Session["UserEmail"] != null)
+            {
+                string email = Convert.ToString(Session["UserEmail"]);
+                userService.CartBuy(id, email, quantity);
+
+
+            }
+            else
+            {
+
+                TempData["ViewCartError"] = "Please Login to view the Items in the cart";
+                return RedirectToAction("UserLogin", "Account");
+            }
+
+            TempData["CartBuyRequest"] = "Your Buy Request has been sent to the Seller";
+            return RedirectToAction("ViewCart");
         }
 
         public ActionResult RemoveCartItem(int id)
