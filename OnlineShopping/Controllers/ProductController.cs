@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;               //Usage of IEnumerable type
+﻿using System;
+using System.Collections.Generic;               //Usage of IEnumerable type
 using System.Linq;
 using System.Web.Mvc;                           //Usage of Controllers as a base class   
 using OnlineShopping.DomainModel;               //Usage of Database Model   
@@ -123,11 +124,12 @@ namespace OnlineShopping.Controllers
                 return RedirectToAction("UserLogin", "Account");
         }
 
-        public ActionResult DeleteOrder(int id) //The user can delete his order before it is approved by the admin
+        public ActionResult DeleteOrder(int RequestID,int quantity,int productID) //The user can delete his order before it is approved by the admin
         {
             if (Session["UserEmail"] != null)
             {
-                productService.CompletedOrder(id);
+                productService.DeleteOrder(RequestID);
+                productService.AddStock(productID, quantity);
                 return RedirectToAction("YourOrders", "User");
             }
             else
@@ -142,9 +144,11 @@ namespace OnlineShopping.Controllers
                 completedOrders.RequestId = buyRequest.RequestId;
                 completedOrders.ProductId = buyRequest.ProductId;
                 completedOrders.Email = buyRequest.Email;
+                completedOrders.quantity = buyRequest.quantity;
+                completedOrders.DateTime = DateTime.Now;
                 onlineShoppingDbcontext.CompletedOrders.Add(completedOrders);
                 onlineShoppingDbcontext.SaveChanges();
-                productService.CompletedOrder(id);
+                productService.DeleteOrder(id);
                 return RedirectToAction("CustomerOrders");
             }
             else

@@ -1,10 +1,15 @@
 ﻿@model IEnumerable<OnlineShopping.DomainModel.Producttable>
     
 @{
-        ViewBag.Title = "Products List";
-        Layout = "~/Views/Shared/_Admin.cshtml";
+    ViewBag.Title = "Products List";
+   
     }
 
+<div style="text-align:center">
+    <span class="alert-warning">
+        @TempData["AdminUpdate"]
+    </span>
+</div>
     <table class="table table-hover">
         <tr>
             <th>Id</th>
@@ -14,10 +19,12 @@
             <th>Product Name</th>
 
             <th>Brand</th>
-
+            <th>Stock</th>
+            <th>Quantity</th>
             <th>Price</th>
 
             <th>Description</th>
+            <th >Action</th>
         </tr>
         @foreach (var item in Model)
         {
@@ -29,6 +36,8 @@
                 <td>@item.ProductName</td>
 
                 <td>@item.Brand</td>
+                <td>@item.Stock</td>
+                <td>@item.quantity</td>
 
                 <td>@item.Price</td>
 

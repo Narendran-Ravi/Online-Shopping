@@ -18,7 +18,9 @@ namespace OnlineShopping.Repositories
         IEnumerable<BuyRequest> CustomerOrders();
         Register CustomerDetails(string email);
         Producttable ProductSpecification(int id);
-        void CompletedOrder(int id);
+        void DeleteOrder(int id);
+        IEnumerable<Producttable> FindID(int id);
+        void AddStock(Producttable producttable);
 
     }
     public class ProductRepository:IProductRepository
@@ -82,10 +84,19 @@ namespace OnlineShopping.Repositories
 
        
 
-        public void CompletedOrder(int id)
+        public void DeleteOrder(int id)
         {
             var res = onlineShoppingDbcontext.BuyRequests.Find(id);
             onlineShoppingDbcontext.BuyRequests.Remove(res);
+            onlineShoppingDbcontext.SaveChanges();
+        }
+        public IEnumerable<Producttable> FindID(int id)
+        {
+            return onlineShoppingDbcontext.Producttables.Where(x => x.ProductID == id).ToList();
+        }
+        public void AddStock(Producttable producttable)
+        {
+            onlineShoppingDbcontext.Entry(producttable).State = EntityState.Modified;
             onlineShoppingDbcontext.SaveChanges();
         }
     }

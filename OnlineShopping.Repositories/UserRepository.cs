@@ -22,8 +22,9 @@ namespace OnlineShopping.Repositories
         IEnumerable<Cart> ViewCart(string email);
         IEnumerable<Producttable> FindID(int id);
         void AddCart(Cart cart);
-        List<Cart> FindUser(string email);
+        List<Cart> FindCartUser(string email);
         void UpdateCart(Cart item);
+        void StockUpdate(Producttable producttable);
 
     }
     public class UserRepository:IUserRepository
@@ -93,15 +94,21 @@ namespace OnlineShopping.Repositories
             onlineShoppingDbcontext.Carts.Add(cart);
             onlineShoppingDbcontext.SaveChanges();
         }
-
-        public List<Cart> FindUser (string email)
+        
+        public List<Cart> FindCartUser (string user)
         {
-            return onlineShoppingDbcontext.Carts.Where(x => x.Email == email).ToList();
+            return onlineShoppingDbcontext.Carts.Where(x => x.Email == user).ToList();
         }
 
         public void UpdateCart(Cart item)    
         {
             onlineShoppingDbcontext.Entry(item).State = EntityState.Modified;
+            onlineShoppingDbcontext.SaveChanges();
+        }
+
+        public void StockUpdate(Producttable producttable)
+        {
+            onlineShoppingDbcontext.Entry(producttable).State = EntityState.Modified;
             onlineShoppingDbcontext.SaveChanges();
         }
     }

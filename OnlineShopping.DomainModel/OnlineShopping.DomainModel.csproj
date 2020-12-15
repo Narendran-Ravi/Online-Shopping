@@ -79,6 +79,18 @@
     <Compile Include="Migrations\202012090526406_quantity.designer.cs">
       <DependentUpon>202012090526406_quantity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012120445179_ProductQuantity.cs" />
+    <Compile Include="Migrations\202012120445179_ProductQuantity.designer.cs">
+      <DependentUpon>202012120445179_ProductQuantity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012120749360_CompleteQuantity.cs" />
+    <Compile Include="Migrations\202012120749360_CompleteQuantity.designer.cs">
+      <DependentUpon>202012120749360_CompleteQuantity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012120811121_DateTime.cs" />
+    <Compile Include="Migrations\202012120811121_DateTime.designer.cs">
+      <DependentUpon>202012120811121_DateTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OnlineShoppingDbcontext.cs" />
     <Compile Include="Producttable.cs" />
@@ -113,6 +125,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012090526406_quantity.resx">
       <DependentUpon>202012090526406_quantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012120445179_ProductQuantity.resx">
+      <DependentUpon>202012120445179_ProductQuantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012120749360_CompleteQuantity.resx">
+      <DependentUpon>202012120749360_CompleteQuantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012120811121_DateTime.resx">
+      <DependentUpon>202012120811121_DateTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

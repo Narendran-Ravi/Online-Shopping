@@ -16,6 +16,9 @@ namespace OnlineShopping.DomainModel
         public int RequestId { get; set; }
         public int ProductId { get; set; }
         public string Email { get; set; }
+        public int quantity { get; set; }
+
+        public DateTime DateTime { get; set; }
         [ForeignKey("ProductId")]
         public virtual Producttable producttable { get; set; }
     }

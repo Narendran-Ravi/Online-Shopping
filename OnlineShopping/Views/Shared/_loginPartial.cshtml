@@ -48,15 +48,6 @@
     </style>
 </head>
 <body>
-
-   
-
-
-
-
-
-
-
     @if (Session["UserEmail"] == null && Session["AdminEmail"] == null)
     {
         <ul class="nav navbar-nav navbar-right">
@@ -83,7 +74,7 @@
     <li>
         <a href="@Url.Action("ViewCart", "User")">
             <span class="glyphicon glyphicon-bell"></span>
-            Cart
+            WishList
         </a>
     </li>
     @*<li>
@@ -96,7 +87,7 @@
             </button>
             <div class="dropdown-content">
                 <a href="@Url.Action("YourOrders","User")"><span class="glyphicon glyphicon-flag"></span> Your Orders</a>
-                <a href="@Url.Action("AlreadyBought","User")"><span class="glyphicon glyphicon-gift"></span> Already Bought</a>
+                <a href="@Url.Action("AlreadyBought","User")"><span class="glyphicon glyphicon-gift"></span>  Approved Orders</a>
                 <a href="@Url.Action("UpdateProfile","User")"><span class="glyphicon glyphicon-pencil"></span> Update Profile</a>
                 <a href="@Url.Action("Logout","Account")"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
             </div>

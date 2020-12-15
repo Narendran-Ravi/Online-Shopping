@@ -1,17 +1,32 @@
 ﻿@model IEnumerable<OnlineShopping.DomainModel.CompletedOrders>
 @{
     ViewBag.Title = "Completed Orders";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    //Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-   
+    <style>
+        th {
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
+
+ 
 <table class="table table-hover">
     <tr>
-        <th>Request Id</th>
+        <th><centre>Order Id</centre></th>
+
 
         <th>Product Id</th>
-
+        <th>Product Name</th>
+        <th>Brand</th>
+        <th>Quantity</th>
+        <th>Price</th>
         <th>User email</th>
+        <th>Approved on</th>
 
         
 
@@ -21,10 +36,15 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>@item.RequestId</td>
+            <td><centre>@item.RequestId</centre></td>
 
             <td>@item.ProductId</td>
+            <td>@item.producttable.ProductName</td>
+            <td>@item.producttable.Brand</td>
+            <td>@item.quantity</td>
+            <td>@(item.quantity*item.producttable.Price)</td>
             <td>@item.Email</td>
+            <td>@item.DateTime</td>
 
 
            

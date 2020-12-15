@@ -17,13 +17,22 @@ namespace OnlineShopping.Controllers
         
         public ActionResult BuildEmailTemplate(int id)
         {
-            OnlineShoppingDbcontext onlineShoppingDbcontext = new OnlineShoppingDbcontext();
-            string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "Text" + ".cshtml");
-            var regInfo = onlineShoppingDbcontext.BuyRequests.Where(x => x.RequestId == id).FirstOrDefault();
-            //body = body.ToString();
-            BuildEmailTemplate("Product-Shippment Confirmation", body, regInfo.Email);
-            TempData["BuyerEmail"] = "Email sent to the Buyer";
-            return RedirectToAction("CustomerOrders","Product");
+            try
+            {
+                OnlineShoppingDbcontext onlineShoppingDbcontext = new OnlineShoppingDbcontext();
+                string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "Text" + ".cshtml");
+                var regInfo = onlineShoppingDbcontext.BuyRequests.Where(x => x.RequestId == id).FirstOrDefault();
+                //body = body.ToString();
+                BuildEmailTemplate("Product-Shippment Confirmation", body, regInfo.Email);
+                TempData["BuyerEmail"] = "Email sent to the Buyer";
+                return RedirectToAction("CompletedOrder", "Product", new { @id = id });
+               
+            }
+            catch (Exception ex)
+            {
+               
+                return View("Error", new HandleErrorInfo(ex, "BuildEmailTemplate", "Email"));
+            }
         }
 
         public static void BuildEmailTemplate(string subjectText, string bodyText, string sendTo)
@@ -64,14 +73,11 @@ namespace OnlineShopping.Controllers
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.Credentials = new System.Net.NetworkCredential("ecommercesample86@gmail.com", "sam@8765");
             client.EnableSsl = true;
-            try
-            {
+            //try
+            //{
                 client.Send(mail);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            //}
+            
         }
     }
 }

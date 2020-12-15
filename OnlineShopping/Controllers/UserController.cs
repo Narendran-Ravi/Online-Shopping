@@ -16,32 +16,49 @@ namespace OnlineShopping.Controllers
         OnlineShoppingDbcontext onlineShoppingDbcontext = new OnlineShoppingDbcontext();
         IProductService productService;
         IUserService userService;
+        //public int data;
         public UserController()
         {
             productService = new ProductService();
             userService = new UserService();
         }
-        public ActionResult ViewProducts() //This method displays the list of products available
+        public ActionResult ViewProducts(string search) //This method displays the list of products available
         {
             IEnumerable <Producttable> product = productService.ViewProducts();
+            if (!string.IsNullOrEmpty(search))
+            {
+                product = product.Where(x => x.Category.ToLower().Contains(search.ToLower())).ToList();
+                return View(product);
+            }
             return View(product);
         }
-
-        public ActionResult Buy(int id)  //Using this method we can buy directly from the shop page
+       
+        public ActionResult Buy(/*bool confirm,*/int id,int quantity)  //Using this method we can buy directly from the shop page
         {
             if (Session["UserEmail"] != null)
             {
                 string email= Convert.ToString(Session["UserEmail"]);
-                userService.Buy(id, email);
-                
+                bool ok =userService.Buy(id, email,quantity);
+                if (ok)
+                {
+                    TempData["BuyRequest"] = "Your Buy Request has been sent to the Seller";
+                    return RedirectToAction("ViewProducts");
+                }
+                else
+                {
+                    TempData["BuyRequest"] = "Your selected quantity is more than the stock";
+                    return RedirectToAction("ViewProducts");
+
+                }
+
             }
             else
             {
+
                 TempData["Login"] = "Please Login Before buying a Product";
-                return RedirectToAction("UserLogin","Account");
+                return RedirectToAction("UserLogin", "Account");
             }
-            TempData["BuyRequest"] = "Your Buy Request has been sent to the Seller";
-            return RedirectToAction("ViewProducts");
+
         }
 
         public ActionResult UpdateProfile() //Get method for Update Profile
@@ -135,19 +152,29 @@ namespace OnlineShopping.Controllers
             if (Session["UserEmail"] != null)
             {
                 string email = Convert.ToString(Session["UserEmail"]);
-                userService.CartBuy(id, email, quantity);
+                bool yes = userService.CartBuy(id, email, quantity);
+                if(yes)
+                {
+                    TempData["CartBuyRequest"] = "Your Buy Request has been sent to the Seller";
+                    return RedirectToAction("ViewCart");
+                }
+                else
+                {
+                    TempData["CartBuyRequest"] = "Your selected quantity is more than the Available stock";
+                    return RedirectToAction("ViewCart");
+
+                }
 
 
             }
             else
-            {
+            
 
                 TempData["ViewCartError"] = "Please Login to view the Items in the cart";
                 return RedirectToAction("UserLogin", "Account");
-            }
 
-            TempData["CartBuyRequest"] = "Your Buy Request has been sent to the Seller";
-            return RedirectToAction("ViewCart");
+
+
         }
 
         public ActionResult RemoveCartItem(int id)   //This method removes the item from the cart
@@ -155,5 +182,33 @@ namespace OnlineShopping.Controllers
             userService.RemoveCartItem(id);
             return RedirectToAction("ViewCart");
         }
+        [HttpPost]
+        public ActionResult AddCartQuantity(int productID)
+        {
+            string user = Convert.ToString(Session["UserEmail"]);
+            userService.AddCartQuantity(productID, user);
+            return RedirectToAction("ViewCart");
+        }
+
+        public ActionResult SubtractCartQuantity(int productID)
+        {
+            string user = Convert.ToString(Session["UserEmail"]);
+            userService.SubtractCartQuantity(productID, user);
+            return RedirectToAction("ViewCart");
+        }
+
+        public ActionResult AddQuantity(int productID)
+        {
+            userService.AddQuantity(productID);
+            return RedirectToAction("ViewProducts");
+
+        }
+        public ActionResult SubtractQuantity(int productID)
+        {
+            userService.SubtractQuantity(productID);
+            return RedirectToAction("ViewProducts");
+
+        }
     }
+
 }

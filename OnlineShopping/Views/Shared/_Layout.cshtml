@@ -7,9 +7,16 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/bootstrap")
+
 </head>
+
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+@*<body background="~/Content/Images/1_iAu65xDmvpVdBJgps6EDEw.png">*@
+  
+ <div class="navbar navbar-inverse navbar-fixed-top ">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -20,26 +27,73 @@
                 </button>
                 @Html.ActionLink("Online Shopping", "About", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
-              
-                <ul class="nav navbar-nav">
 
-                    <li>
-                        <a href="@Url.Action("ViewProducts", "User")">
-                            <span class="glyphicon glyphicon-shopping-cart"></span>
-                            Shop
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Contact", "Home")">
-                            <span class="glyphicon glyphicon-envelope"></span>
-                            Contact
-                        </a>
-                    </li>
+            @if (Session["AdminEmail"] != null)
+            {
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
 
-                </ul>
-                @Html.Partial("_loginPartial")
+                        <li>
+                            <a href="@Url.Action("AddProducts","Product")"><span class="glyphicon glyphicon-shopping-cart"></span> Add</a>
+
+                        </li>
+                        <li>
+                            <a href="@Url.Action("ViewProducts","Product")"><span class="glyphicon glyphicon-th-list"></span> View</a>
+
+                        </li>
+                        <li>
+                            <a href="@Url.Action("CustomerOrders","Product")"><span class="glyphicon glyphicon-tags"></span> Pending Orders</a>
+
+                        </li>
+                        <li>
+                            <a href="@Url.Action("CompletedOrders","Admin")"><span class="glyphicon glyphicon-check"></span> Completed Orders</a>
+
+                        </li>
+
+
+                    </ul>
+                    @Html.Partial("_loginPartial")
+                </div>
+            }
+            else
+            {
+        <div class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav">
+
+                <li>
+                    <a href="@Url.Action("ViewProducts", "User")">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        Shop
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Contact", "Home")">
+                        <span class="glyphicon glyphicon-envelope"></span>
+                        Contact
+                    </a>
+                </li>
+
+
+            </ul>
+            <div class="navbar-left " style="margin-top:10px;">
+                @using (Html.BeginForm("ViewProducts", "User", FormMethod.Get))
+                {
+                <div class="nav navbar-nav">
+
+                    @Html.TextBox("search", "", new { @placeholder = "Search Category", autocomplete = "off" ,size="100"})
+                    @*class="btn btn-info"><span class="glyphicon glyphicon-heart"></span> Wishlist</a>*@
+
+                    <button class="btn-warning" type="submit" >Search </button>
+                </div>
+               
+                }
             </div>
+
+            @Html.Partial("_loginPartial")
+        </div>
+            }
+
         </div>
     </div>
 
@@ -51,10 +105,10 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+
+
     @RenderSection("scripts", required: false)
 
-   
+
 </body>
 </html>

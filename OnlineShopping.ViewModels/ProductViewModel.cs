@@ -20,6 +20,12 @@ namespace OnlineShopping.ViewModels
         [Required(ErrorMessage = "Brand Required")]
         public string Brand { get; set; }
 
+        public int quantity { get; set; }
+
+        [Required(ErrorMessage ="Stock is Required")]
+        public int Stock { get; set; }
+
+
         [Required(ErrorMessage = "Required ss")]
         public decimal Price { get; set; }
 

@@ -1,60 +1,82 @@
 ﻿@model IEnumerable<OnlineShopping.DomainModel.BuyRequest>
-    @{
-        ViewBag.Title = "Customer Orders";
-        Layout = "~/Views/Shared/_Admin.cshtml";
+@{
+    ViewBag.Title = "Customer Orders";
+    //Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<style>
+th {text-align: center;}
+    td {
+        text-align: center;
     }
-
+    #fixed {
+        position: fixed;
+        
+    }
+   
+    
+</style>
+   
 <div>
 
-<div style="text-align:center">
-<span class="alert-success">
-    @TempData["BuyerEmail"]
-    <br/>
-</span>
+    <div  style="text-align:center">
+        <span class="alert-success">
+            @TempData["BuyerEmail"]
+            <br />
+        </span>
     </div>
 </div>
-    <table class="table table-hover">
+<table class="table table-hover">
+    <tr  >
+        <th><centre>Order Id</centre></th>
+
+        <th>Product Id</th>
+        <th>Product Name</th>
+        <td></td>
+        <th>Brand</th>
+        <td></td>
+        <th>Quantity</th>
+        <th>User email</th>
+
+        <th></th>
+        <th>Action</th>
+        <th></th>
+
+
+
+    </tr>
+   
+    @foreach (var item in Model)
+    {
+        <tr></tr>
+        <tr></tr>
         <tr>
-            <th>Request Id</th>
+            <td>@item.RequestId</td>
 
-            <th>Product Id</th>
-            <th>Product Name</th>
+            <td>@item.ProductId</td>
+            <td>@item.producttable.ProductName</td>
             <td></td>
-            <th>Brand</th>
+            <td>@item.producttable.Brand</td>
             <td></td>
-            <th>Quantity</th>
-            <th>User email</th>
-
-            <th></th>
-            <th></th>
-            <th></th>
-            
+            <td>@item.quantity</td>
+            <td>@item.Email</td>
 
 
+
+            <td>
+                <a href="@Url.Action("CustomerDetails",new { email=item.Email})" class="btn btn-success"><span class="glyphicon glyphicon-tasks"></span> Customer Details</a>
+            </td>
+            <td>
+                <a href="@Url.Action("BuildEmailTemplate","Email",new {id=item.RequestId})"  onclick="return confirm('Is the order packed and dispatched?\nAre you sure to proceed with email confirmation?')"class=" btn btn-primary"><span class="glyphicon glyphicon-envelope"></span>  Complete Order</a>
+            </td>
+            @*@if(@TempData["BuyerEmail"] !=null)
+            {
+            <td>
+                <a href="@Url.Action("CompletedOrder",new{ id=item.RequestId })" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Complete Order</a>
+
+            </td>
+            }*@
         </tr>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.RequestId</td>
-
-                <td>@item.ProductId</td>
-                <td>@item.producttable.ProductName</td>
-                <td></td>
-                <td>@item.producttable.Brand</td>
-                <td></td>
-                <td>@item.quantity</td>
-                <td>@item.Email</td>
-                
-
-
-                <td>
-                    <a href="@Url.Action("CustomerDetails",new { email=item.Email})" class="btn btn-success"><span class="glyphicon glyphicon-tasks"></span> Customer Details</a>
-                    </td><td>
-                    <a href="@Url.Action("BuildEmailTemplate","Email",new {id=item.RequestId})" class=" btn btn-primary"><span class="glyphicon glyphicon-envelope"></span>  Send Confirmation Mail</a></td>
-                   <td> <a href="@Url.Action("CompletedOrder",new{ id=item.RequestId })" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Complete Order</a>
-
-                </td>
-            </tr>
-        }
-    </table>
+    }
+</table>
+   
 

@@ -12,48 +12,207 @@
 
     </span>
 </div>
-
-<table class="table table-hover">
-    <tr>
-        @*<th>Id</th>*@
-
-        <th>Category</th>
-
-        <th>Product Name</th>
-
-        <th>Brand</th>
-
-        <th>Price</th>
-
-        <th>Description</th>
-        <th></th>
-        <th></th>
-       
-    </tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            @*<td>@item.ProductID</td>*@
-
-            <td>@item.Category</td>
-
-            <td>@item.ProductName</td>
-
-            <td>@item.Brand</td>
-
-            <td>@item.Price</td>
-
-            <td>@item.Description</td>
-
-            <td></td>
-            <td>
-                <a href="@Url.Action("Buy",new { id=item.ProductID})" class="btn btn-success"><span class="glyphicon glyphicon-tag"></span> Buy</a>
-          
-                <a href="@Url.Action("AddCart", new {id=item.ProductID})" class="btn btn-info"><span class="glyphicon glyphicon-heart"></span> Add to Cart</a>
-
-
-
-            </td>
-        </tr>
+<style>
+    th {
+        text-align: center;
     }
-</table>
+
+    td {
+        text-align: center;
+    }
+</style>
+
+@*<div>
+    @using (Html.BeginForm("ViewProducts", "User", FormMethod.Get))
+    {
+            @Html.TextBox("search")<input value="Search" type="submit" />
+                }
+</div>*@
+<div id="table">
+
+    <table class="table table-hover">
+        <tr>
+
+            <th>Category</th>
+
+            <th>Product Name</th>
+
+            <th>Brand</th>
+            @if (Session["UserEmail"] != null)
+            {
+                <th>Quantity</th>
+            }
+
+            <th>Price</th>
+            @if (Session["UserEmail"] != null)
+            {
+                <th>Available Stock</th>
+            }
+            <th>Description</th>
+            <th></th>
+            <th></th>
+
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Category</td>
+
+                <td>@item.ProductName</td>
+
+                <td>@item.Brand</td>
+
+
+                @if (Session["UserEmail"] != null)
+                {
+                    <td>
+                        @if (@item.quantity > 1)
+                        {
+                            <button type="button" class="SubtractQuantity" id="@item.ProductID"> - </button>
+                        }
+
+                        else
+
+                        {
+                            <button type="button" class="SubtractQuantity" id="@item.ProductID" disabled> -</button>
+                        }
+
+                        <input type="number" value=" @item.quantity" width="30" readonly />
+
+                        @if (@item.quantity < @item.Stock)
+                        {
+                            <button type="button" class="AddQuantity" data-id="@item.ProductID"> + </button>
+                        }
+
+                        else
+
+                        {
+                            <button type="button" class="AddQuantity" data-id="@item.ProductID" disabled> +</button>
+                        }
+
+                    </td>
+                    <td>@(@item.Price * item.quantity)</td>
+                }
+                else
+                {
+                    <td>@item.Price</td>
+                }
+
+                @if (Session["UserEmail"] != null)
+                {
+                    <td>@item.Stock</td>
+                }
+                <td>@item.Description</td>
+
+                <td></td>
+                <td>
+                    @*<button type="button" class="buyBtn" data-id="@item.ProductID" qty-id="@item.quantity">Buy</button>*@
+                    <a href="@Url.Action("Buy", new { id = item.ProductID, confirm = true, quantity=item.quantity })" onclick="return confirm('Are you sure you want to buy this product ?')" class="btn btn-success">
+                            <span class="glyphicon glyphicon-tag"></span> Buy
+                        </a>
+                    <a href="@Url.Action("AddCart", new {id=item.ProductID})" onclick="return confirm('Do you want to add this item to your wishlist ?')" class="btn btn-info"><span class="glyphicon glyphicon-heart"></span> Wishlist</a>
+
+
+
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    $(".AddQuantity").click(function () {
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: '/User/AddQuantity',
+            data:
+            {
+                productID: $(this).attr('data-id')
+            }
+        })
+
+            .done(function () {
+                $(document).ajaxStop(function () {
+                    window.location.reload();
+                });
+            })
+
+            .fail(function () {
+                alert("Failed to add quantity");
+            })
+    })
+
+    $(".SubtractQuantity").click(function () {
+        debugger;
+
+        $.ajax({
+            type: 'POST',
+            url: '/User/SubtractQuantity',
+            data:
+            {
+                productID: $(this).attr('id')
+            }
+        })
+
+            .done(function () {
+                $(document).ajaxStop(function () {
+                    window.location.reload();
+                });
+            })
+
+            .fail(function () {
+                alert("Failed to subtract quantity");
+            })
+    })
+</script>
+<!--<script>
+    $(".buyBtn").click(function () {
+        //alert("Yes");
+        debugger;
+        //if (Session["UserEmail"] != null) {
+
+            var confirmbuy = confirm("Are you sure to buy this item?");
+            if (confirmbuy) {
+                $.ajax({
+                    //type: 'POST',
+                    url: '/User/Buy',
+                    data: {
+                        id: $(this).attr('data-id'),
+                        quantity:$(this).attr('qty-id')
+                    }
+                })-->
+@*.done(function () {
+        var result =@ViewBag.Status;
+        if (result) {
+            alert("Yes");
+        }
+        else {
+            alert("No");
+        }
+    //})*@
+
+                    <!--.done(function (data) {
+                        $(document).ajaxStop(function () {
+                            window.location.reload();
+                        })
+                     })
+
+
+                    .fail(function (data) {
+                    alert("Please login before buying a Product");
+                    })
+
+            }
+
+
+        //else {
+        //    window.location.href = "/Account/Login";
+        //        alert("Please login before buying a product");
+
+        //}
+
+    });
+
+</script>-->

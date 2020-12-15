@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using OnlineShopping.ViewModels;
 using OnlineShopping.Repositories;
 using OnlineShopping.DomainModel;
+using System.Linq;
 
 namespace OnlineShopping.ServiceLayer
 {
@@ -22,7 +23,8 @@ namespace OnlineShopping.ServiceLayer
         IEnumerable<BuyRequest> CustomerOrders();
         Register CustomerDetails(string email);
         Producttable ProductSpecification(int id);
-        void CompletedOrder(int id);
+        void DeleteOrder(int id);
+        void AddStock(int id, int quantity);
 
 
 
@@ -94,9 +96,29 @@ namespace OnlineShopping.ServiceLayer
         }
 
         
-        public void CompletedOrder(int id)    //passes the id to the Product Repository
+        public void DeleteOrder(int id)    //passes the id to the Product Repository
         {
-            productRepository.CompletedOrder(id);
+            productRepository.DeleteOrder(id);
+        }
+
+        public void AddStock(int id, int quantity)
+        {
+            OnlineShoppingDbcontext onlineShoppingDbcontext = new OnlineShoppingDbcontext();
+            // IEnumerable<Producttable> producttables = productRepository.FindID(id);
+            Producttable producttable = onlineShoppingDbcontext.Producttables.Find(id);
+            //
+            //bool IdExists = producttables.Any(x => x.ProductID == id);
+            if (producttable!=null)
+            {
+                //foreach (var item in producttables)
+                //{
+                    if (producttable.ProductID == id)
+                    {
+                        producttable.Stock = (producttable.Stock + quantity);
+                        productRepository.AddStock(producttable);
+                    }
+                //}
+            }
         }
     }
 }

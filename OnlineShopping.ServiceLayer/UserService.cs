@@ -16,14 +16,20 @@ namespace OnlineShopping.ServiceLayer
         UserViewModel UserLogin(UserViewModel userViewModel);
         RegisterViewModel GetEmail(string email);
         void UpdateProfile(RegisterViewModel registerViewModel);
-        void Buy(int id, string email);
+        bool Buy(int id, string email, int quantity);
         void RemoveCartItem(int id);
         IEnumerable<BuyRequest> YourOrders(string email);
         IEnumerable<CompletedOrders> AlreadyBought(string email);
         IEnumerable<Cart> ViewCart(string email);
         IEnumerable<Producttable> FindID(int id);
         void AddCart(int id, string email);
-        void CartBuy(int id, string email, int quantity);
+        bool CartBuy(int id, string email, int quantity);
+        bool CheckAvailability(int id, int quantity);
+        void AddCartQuantity(int productID, string user);
+        void AddQuantity(int productID);
+        void SubtractCartQuantity(int productID, string user);
+        void SubtractQuantity(int productID);
+        void StockUpdate(int id, int quantity);
     }
     public class UserService : IUserService
     {
@@ -71,13 +77,20 @@ namespace OnlineShopping.ServiceLayer
             userRepository.UpdateProfile(register);
         }
 
-        public void Buy(int id,string email)
+        public bool Buy(int id, string email,int quantity)
         {
             BuyRequest buyRequest = new BuyRequest();
-            buyRequest.ProductId = id;
-            buyRequest.Email = email;
-            buyRequest.quantity = 1;
-            userRepository.Buy(buyRequest);
+            bool AvailabilityCheck = CheckAvailability(id, quantity);
+            if (AvailabilityCheck)
+            {
+                buyRequest.ProductId = id;
+                buyRequest.Email = email;
+                buyRequest.quantity = quantity;
+                userRepository.Buy(buyRequest);
+                StockUpdate(id, buyRequest.quantity);
+                return true;
+            }
+            return false;
         }
 
         public void RemoveCartItem(int id)
@@ -104,16 +117,16 @@ namespace OnlineShopping.ServiceLayer
             return userRepository.FindID(id);
         }
 
-        public void AddCart(int id,string email)
+        public void AddCart(int productID, string user)
         {
             Cart cart = new Cart();
-            List<Cart> carts = userRepository.FindUser(email);
-            bool AlreadyExists = carts.Any(x => x.ProductID == id);
+            List<Cart> carts = userRepository.FindCartUser(user);
+            bool AlreadyExists = carts.Any(x => x.ProductID == productID);
             if (AlreadyExists)
             {
                 foreach (var item in carts)
                 {
-                    if (item.ProductID == id)
+                    if (item.ProductID == productID)
                     {
                         item.quantity = ++item.quantity;
                         userRepository.UpdateCart(item);
@@ -122,23 +135,142 @@ namespace OnlineShopping.ServiceLayer
             }
             else
             {
-                cart.quantity=1;
-                cart.ProductID = id;
-                cart.Email = email;
+                cart.quantity = 1;
+                cart.ProductID = productID;
+                cart.Email = user;
                 userRepository.AddCart(cart);
             }
         }
 
-        public void CartBuy(int id,string email,int quantity)
+        public bool CartBuy(int id, string email, int quantity)
         {
             BuyRequest buyRequest = new BuyRequest();
-            buyRequest.ProductId = id;
-            buyRequest.Email = email;
-            buyRequest.quantity = quantity;
-            userRepository.Buy(buyRequest);
-
+            bool checkAvailability = CheckAvailability(id, quantity);
+            if (checkAvailability)
+            {
+                buyRequest.ProductId = id;
+                buyRequest.Email = email;
+                buyRequest.quantity = quantity;
+                userRepository.Buy(buyRequest);
+                StockUpdate(id, quantity);
+                return true;
+            }
+            return false;
+                
+           
         }
 
-        
+        public bool CheckAvailability(int id, int quantity)
+        {
+            Producttable producttable = new Producttable();
+            IEnumerable<Producttable> producttables = userRepository.FindID(id);
+            bool IdExists = producttables.Any(x => x.ProductID == id);
+            if (IdExists)
+            {
+                foreach (var item in producttables)
+                {
+                    if (item.ProductID == id)
+                    {
+                        if (quantity <= item.Stock)
+                        {
+                            return true;
+                        }
+                        else
+                            return false;
+                    }
+                }
+            }
+            return false;
+        }
+        public void StockUpdate(int id,int quantity)
+        {
+            Producttable producttable = new Producttable();
+            IEnumerable<Producttable> producttables = userRepository.FindID(id);
+            bool IdExists = producttables.Any(x => x.ProductID == id);
+            if(IdExists)
+            {
+                foreach(var item in producttables)
+                {
+                    if(item.ProductID == id)
+                    {
+                        item.Stock = (item.Stock - quantity);
+                        userRepository.StockUpdate(item);
+                     }
+                }
+            }
+        }
+        public void AddCartQuantity(int productID, string user)
+        {
+
+            Cart cart = new Cart();
+            List<Cart> carts = userRepository.FindCartUser(user);
+            bool AlreadyExists = carts.Any(x => x.ProductID == productID);
+            if (AlreadyExists)
+            {
+                foreach (var item in carts)
+                {
+                    if (item.ProductID == productID)
+                    {
+                        item.quantity = ++item.quantity;
+                        userRepository.UpdateCart(item);
+                    }
+                }
+            }
+        }
+
+        public void AddQuantity(int productID)
+        {
+            Producttable producttable = new Producttable();
+            IEnumerable<Producttable> producttables = userRepository.FindID(productID);
+            bool IdExists = producttables.Any(x => x.ProductID == productID);
+            if (IdExists)
+            {
+                foreach(var item in producttables)
+                {
+                    if(item.ProductID==productID)
+                    {
+                        item.quantity = ++item.quantity;
+                        userRepository.StockUpdate(item);
+                    }
+                }
+            }
+        }
+
+        public void SubtractCartQuantity(int productID, string user)
+        {
+            Cart cart = new Cart();
+            List<Cart> carts = userRepository.FindCartUser(user);
+            bool AlreadyExists = carts.Any(x => x.ProductID == productID);
+            if (AlreadyExists)
+            {
+                foreach (var item in carts)
+                {
+                    if (item.ProductID == productID)
+                    {
+                        item.quantity = --item.quantity;
+                        userRepository.UpdateCart(item);
+                    }
+                }
+            }
+        }
+
+        public void SubtractQuantity(int productID)
+        {
+            Producttable producttable = new Producttable();
+            IEnumerable<Producttable> producttables = userRepository.FindID(productID);
+            bool IdExists = producttables.Any(x => x.ProductID == productID);
+            if (IdExists)
+            {
+                foreach (var item in producttables)
+                {
+                    if (item.ProductID == productID)
+                    {
+                        item.quantity = --item.quantity;
+                        userRepository.StockUpdate(item);
+                    }
+                }
+            }
+        }
+
     }
 }

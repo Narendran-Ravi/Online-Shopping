@@ -1,17 +1,26 @@
 ﻿@model IEnumerable<OnlineShopping.DomainModel.BuyRequest>
 @{
     ViewBag.Title = "Your Orders";
-    
+
 }
 
+<style>
+    th {
+        text-align: center;
+    }
 
+    td {
+        text-align: center;
+    }
+</style>
 <table class="table table-hover">
     <tr>
-        <th>Request Id</th>
+        <th>Order Id</th>
 
-        <th>Product Id</th>
 
         <th>Product Name</th>
+        <th>Brand</th>
+        <th>Quantity</th>
         <th>Price</th>
 
         <th></th>
@@ -24,17 +33,20 @@
         <tr>
             <td>@item.RequestId</td>
 
-            <td>@item.ProductId</td>
+
             <td>@item.producttable.ProductName</td>
-            <td>@item.producttable.Price</td>
+            <td>@item.producttable.Brand</td>
+            <td>@item.quantity</td>
+
+            <td>@(@item.producttable.Price*@item.quantity)</td>
 
             <td>
-                <a href="@Url.Action("ProductSpecification","Product",new { id =item.ProductId})" class="btn btn-info">View Product Details</a>
-                <a href="@Url.Action("DeleteOrder","Product",new { id = item.RequestId })" class="btn btn-danger" >Delete Order</a>
+                <a href="@Url.Action("ProductSpecification","Product",new { id =item.ProductId})" class="btn btn-info"><span class="glyphicon glyphicon-tasks"></span> View Product Details</a>
+                <a href="@Url.Action("DeleteOrder","Product",new { RequestID = item.RequestId ,quantity=item.quantity ,productID =item.ProductId})" onclick="return confirm('Are you sure to cancel your placed order ?')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>  Delete Order</a>
             </td>
 
 
-          
+
         </tr>
     }
 </table>

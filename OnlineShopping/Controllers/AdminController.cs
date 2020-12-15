@@ -30,6 +30,7 @@ namespace OnlineShopping.Controllers
         //Get method for Admin Update Profile
         public ActionResult UpdateProfile() //The admin can update his profile in this method
         {
+            
             if (Session["AdminEmail"] != null)
             {
                 var res = Convert.ToString(Session["AdminEmail"]);
@@ -44,26 +45,39 @@ namespace OnlineShopping.Controllers
         [HttpPost]
         public ActionResult UpdateProfile(Admin admin) //Post method for UpdateProfile
         {
-            if (ModelState.IsValid)
+            try
             {
-                adminService.UpdateProfile(admin);
-                TempData["AdminUpdate"] = "Your Details have been Updated";
-                return RedirectToAction("Home", "Admin");
+                if (ModelState.IsValid)
+                {
+                    adminService.UpdateProfile(admin);
+                    TempData["AdminUpdate"] = "Your Details have been Updated";
+                    return RedirectToAction("ViewProducts", "Product");
+                }
+                else
+                    return View();
             }
-            else
-                return View(admin);
-            
+            catch(Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "UpdateProfile", "Admin"));
+            }
         }
 
         public ActionResult CompletedOrders() //This method displays the completed order
         {
-            if (Session["AdminEmail"] != null)
+            try 
             {
-                IEnumerable<CompletedOrders> completedOrders = adminService.CompletedOrders();
-                return View(completedOrders);
+                if (Session["AdminEmail"] != null)
+                {
+                    IEnumerable<CompletedOrders> completedOrders = adminService.CompletedOrders();
+                    return View(completedOrders);
+                }
+                else
+                    return RedirectToAction("AdminLogin", "Account");
             }
-            else
-                return RedirectToAction("AdminLogin", "Account");
-        }
+            catch(Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "CompletedOrders", "Admin"));
+            }
+         }
     }
 }

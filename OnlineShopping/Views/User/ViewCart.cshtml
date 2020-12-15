@@ -11,7 +11,7 @@
 
     </span>
 </div>
-
+@*@if(Model.Carts.count>0)*@
 <table class="table table-hover">
     <tr>
         <th>Category</th>
@@ -27,8 +27,32 @@
     <td>@item.producttable.Category</td>
     <td>@item.producttable.ProductName</td>
     <td>@item.producttable.Brand</td>
-    <td>@item.quantity</td>
-    @*<td>@(@item.producttable.Priceitem.producttable.Price)</td>*@
+    <td>
+         @if (@item.quantity > 1)
+          {
+             <button type="button" class="SubtractQuantity" id="@item.ProductID" > - </button>
+          }
+         
+         else
+
+         {
+           <button type="button" class="SubtractQuantity" id="@item.ProductID" disabled> -</button>
+         }
+    
+            <input type="number" value=" @item.quantity" width="30" readonly/>
+
+        @if (@item.quantity < @item.producttable.Stock)
+        {
+           <button type="button" class="AddQuantity" data-id="@item.ProductID"> + </button>
+        }
+
+        else
+
+        {
+            <button type="button" class="AddQuantity" data-id="@item.ProductID" disabled> +</button>
+        }
+
+     </td>
     <td>@(@item.producttable.Price*@item.quantity)</td>
     <td>@item.producttable.Description</td>
     <td>
@@ -39,3 +63,50 @@
 </tr>
     }
 </table>
+
+<script>
+    $(".AddQuantity").click(function (){
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: '/User/AddCartQuantity',
+            data:
+            {
+                productID:$(this).attr('data-id')
+            }
+        })
+       
+            .done(function () {
+                $(document).ajaxStop(function () {
+                    window.location.reload();
+                });
+            })
+
+            .fail(function () {
+                alert("Failed to add quantity");
+            })
+    })
+
+    $(".SubtractQuantity").click(function () {
+        debugger;
+       
+        $.ajax({
+            type: 'POST',
+            url: '/User/SubtractCartQuantity',
+            data:
+            {
+                productID: $(this).attr('id')
+            }
+        })
+
+            .done(function () {
+                $(document).ajaxStop(function () {
+                    window.location.reload();
+                });
+            })
+
+            .fail(function () {
+                alert("Failed to subtract quantity");
+            })
+    })
+</script>
